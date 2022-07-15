@@ -1,0 +1,31 @@
+---
+title: "test-data"
+output: html_document
+---
+
+# load libraries
+```{r}
+library(tidyverse)
+library(here)
+library(rio)
+library(ggplot2)
+library(Hmisc)
+library(lubridate)
+```
+
+# import data
+```{r}
+test_df <- import(here("data", "sc-test-data.csv"))
+mturk_df <- import(here("data", "sc-mturk-file.csv"))
+```
+
+# clean data
+```{r}
+mturk_df <- mturk_df %>% 
+  rename(., ID = AmazonIdentifier) %>% 
+  janitor::clean_names()
+
+# match_df <- inner_join(test_df, mturk_df, by = "ID") %>% 
+#   mutate(match = if_else(as.numeric(unique_code)) == )
+```
+

@@ -28,6 +28,8 @@ test_df1 <- test_df[3:nrow(test_df),1:ncol(test_df)] %>%
   mutate(con = if_else(consent1 == "I give my consent.", 1, 0),
          done = if_else(finished == T, if_else(con == 1, 1, 0), 0))
 
+nrow(unique(test_df1)) == nrow(test_df1)
+
 mturk_df1 <- mturk_df %>% 
   janitor::clean_names() %>% 
   rename(., id = amazon_identifier) %>% 
@@ -35,6 +37,8 @@ mturk_df1 <- mturk_df %>%
   mutate(code_yn = if_else(is.na(entered_code) == T, 0, 1),
          submitted = if_else(approval_status == "Not Submitted", 0, 1)) %>% 
   select(id, submitted, code_yn, entered_code, approval_status, submitted)
+
+nrow(unique(mturk_df1)) == nrow(mturk_df1)
 
 match_df <- left_join(mturk_df1, test_df1, by = "id") %>% 
   select(id, submitted, unique_code, entered_code, code_yn, everything())
@@ -60,5 +64,6 @@ nomatch_df <- match_df1 %>%
 nosubmit_df <- match_df1 %>% 
   filter(submitted == 0) %>% 
   select(id, match)
+
 ```
 

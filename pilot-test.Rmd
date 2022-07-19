@@ -46,24 +46,24 @@ match_df <- left_join(mturk_df1, test_df1, by = "id") %>%
 
 # match data
 ```{r}
-match_df1 <- match_df %>% 
-  mutate(match = if_else(code_yn == 1, if_else(
-    as.numeric(entered_code) == as.numeric(unique_code), 1, 0
-    ), 2),
-    pending = if_else(approval_status == "Pending", 1, 0)) %>% 
-  select(id, match, submitted, pending, contains("code"), approval_status)
-
-pending_df <- match_df1 %>% 
-  filter(match == 1 & pending == 1) %>% 
-  select(id, unique_code)
-
-nomatch_df <- match_df1 %>% 
-  filter(match == 0) %>% 
-  select(id, contains("code"))
-
-nosubmit_df <- match_df1 %>% 
-  filter(submitted == 0) %>% 
-  select(id, match)
+# match_df1 <- match_df %>% 
+#   mutate(match = if_else(code_yn == 1, if_else(
+#     as.numeric(entered_code) == as.numeric(unique_code), 1, 0
+#     ), 2),
+#     pending = if_else(approval_status == "Pending", 1, 0)) %>% 
+#   select(id, match, submitted, pending, contains("code"), approval_status)
+# 
+# pending_df <- match_df1 %>% 
+#   filter(match == 1 & pending == 1) %>% 
+#   select(id, unique_code)
+# 
+# nomatch_df <- match_df1 %>% 
+#   filter(match == 0) %>% 
+#   select(id, contains("code"))
+# 
+# nosubmit_df <- match_df1 %>% 
+#   filter(submitted == 0) %>% 
+#   select(id, match)
 
 ```
 

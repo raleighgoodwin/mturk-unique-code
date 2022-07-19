@@ -92,9 +92,9 @@ check_duplicates(mturk_df, test_df)
 mturk_dup <- rbind(mturk_df, mturk_df[2,])
 test_dup <- rbind(test_df, test_df[2,])
 
-check_duplicates(mturk_df, test_dup)
-check_duplicates(mturk_dup, test_df)
-check_duplicates(mturk_dup, test_dup)
+# check_duplicates(mturk_df, test_dup)
+# check_duplicates(mturk_dup, test_df)
+# check_duplicates(mturk_dup, test_dup)
 # works!
 ```
 
@@ -131,42 +131,59 @@ match_dfc %>%
   clean_matchdf() # works!
 ```
 
+## all together
+```{r}
+mtchr <- function(df_m, df_q) {
+
+  df_m <- df_m %>% 
+    clean_mturk
+  df_q <- df_q %>% 
+    clean_qualtrics()
+  
+  check_duplicates(df_m, df_q)
+  
+  match_dfs(df_m, df_q) %>% 
+    clean_matchdf()
+}
+```
+
 ## Match dataset output
 ```{r}
-output_match <- function(df) {
-  
-  pending_df <- df %>% 
-    filter(match == 1 & pending == 1) %>% 
-    select(id, unique_code)
-
-  nomatch_df <- df %>% 
-    filter(match == 0) %>% 
-    select(id, contains("code"))
-
-  nosubmit_df <- df %>% 
-    filter(submitted == 0) %>% 
-    select(id, match)
-  
-  if(nrow(nomatch_df) != 0) {
-    nomatch_df
-  }
-  else("All codes match.")
-
-  if(nrow(pending_df) != 0) {
-    pending_df
-  }
-  else("No HITs pending.")
-  
-  if(nrow(nosubmit_df) != 0) {
-    nosubmit_df
-  }
-  else("All HITs were submitted.")
-}
+# output_match <- function(df) {
+#   
+#   pending_df <- df %>% 
+#     filter(match == 1 & pending == 1) %>% 
+#     select(id, unique_code)
+# 
+#   nomatch_df <- df %>% 
+#     filter(match == 0) %>% 
+#     select(id, contains("code"))
+# 
+#   nosubmit_df <- df %>% 
+#     filter(submitted == 0) %>% 
+#     select(id, match)
+#   
+#   if(nrow(nomatch_df) != 0) {
+#     nomatch_df
+#   }
+#   else("All codes match.")
+# 
+#   if(nrow(pending_df) != 0) {
+#     pending_df
+#   }
+#   else("No HITs pending.")
+#   
+#   if(nrow(nosubmit_df) != 0) {
+#     nosubmit_df
+#   }
+#   else("All HITs were submitted.")
+# }
 ```
 
 ## test
 ```{r}
-match_dfc %>% 
-  output_match()
+# match_dfc %>% 
+#   purrr::safely() %>% 
+#   output_match()
 ```
 
